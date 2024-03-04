@@ -1,14 +1,16 @@
 <template>
-    <article class="prose dark:prose-invert prose-pre:bg-white dark:prose-gray-800 prose-preL text-gray-700 dark:prose-pre:text-gray-300">
+    <article class="prose dark:prose-invert max-w-none prose-pre:bg-white dark:prose-pre:bg-gray-800 prose-pre:text-gray-700 dark:prose-pre:text-gray-300">
         <ContentDoc>
             <template #not-found>
+                <h1>Document not found (404)</h1>
+                <p>This blog post could not be found.</p>
             </template>
-            <template  v-slot="{ doc }">
+            <template v-slot="{ doc }">
                 <div class="grid grid-cols-6 gap-16">
-                    <div :class="{ 'col-span-4 border': doc.toc, 'col-span-6': !doc.toc }">
+                    <div :class="{ 'col-span-4': doc.toc, 'col-span-6': !doc.toc }">
                         <ContentRenderer :value="doc" />
                     </div>
-                    <div class="col-span-2 not-prose " v-if="doc.toc">
+                    <div class="col-span-2 not-prose" v-if="doc.toc">
                         <aside class="sticky top-8">
                             <div class="font-semibold mb-2">
                                 Table of Contents
@@ -25,42 +27,35 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+const activeId = ref(null)
 
-const route = useRoute();
-console.log(route);
-const activeId = ref(null);
 onMounted(() => {
-    const callback = entries => {
+    let elements = []
+    const callback = (entries) => {
         for (const entry of entries) {
-            const id = entry.target.id
-            const link = document.querySelector(`a[href="#${id}"]`)
             if (entry.isIntersecting) {
-                activeId.value = id
-                link.classList.add('text-blue-500')
-            } else {
-                link.classList.remove('text-blue-500')
+                activeId.value = entry.target.id
+                break;
             }
         }
     }
     const observer = new IntersectionObserver(callback, {
         root: null,
-        rootMargin: '0px',
         threshold: 0.5
-    });
-    const elements = document.querySelectorAll('h2, h3')
-    for (const element of elements) {
-        observer.observe(element)
-    }
+    })
+
+    setTimeout(() => {
+        elements = document.querySelectorAll('h2, h3')
+
+        for (const element of elements) {
+            observer.observe(element)
+        }
+    }, 150)
+
     onBeforeUnmount(() => {
         for (const element of elements) {
             observer.unobserve(element)
         }
     })
 })
-
-
-
 </script>
-
-<style lang="scss" scoped></style>

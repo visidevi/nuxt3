@@ -5,12 +5,12 @@
         <div>date</div>
         <div>title</div>
       </div>
+
       <ul>
         <li v-for="post in posts" :key="post._path">
-          <NuxtLink :to="post._path" class="column hover:bg-gray-100 dark:hover:bg-gray-800">
-            <div class="text-gray-500">
-              <div :class="{ 'text-white dark:text-gray-900': post.displayDate, 'text-gray-400 dark:text-gray-500': post.displayDate }">{{ post.year }}</div>
-            </div>
+          <NuxtLink :to="post._path" class="column group hover:bg-gray-100 dark:hover:bg-gray-800">
+            <div :class="{ 'text-white group-hover:text-gray-100 dark:text-gray-900 dark:group-hover:text-gray-800': !post.displayYear, 'text-gray-400 dark:text-gray-500': post.displayYear }">
+              {{ post.year }}</div>
             <div>{{ post.title }}</div>
           </NuxtLink>
         </li>
@@ -20,7 +20,6 @@
 </template>
 
 <script setup>
-
 const props = defineProps({
   limit: {
     type: Number,
@@ -29,48 +28,46 @@ const props = defineProps({
 })
 
 const { data } = await useAsyncData(
-  'blog_list',
+  'blog-list',
   () => {
-    const query = queryContent('/')
+    const query = queryContent('/blog')
       .where({ _path: { $ne: '/blog' } })
-      .only(['title', 'publishedAt', '_path'])
-      .sort('publishedAt', -1)
+      .only(['_path', 'title', 'publishedAt'])
+      .sort({ publishedAt: -1 })
 
-    if (props?.limit) {
+    if (props.limit) {
       query.limit(props.limit)
     }
+
     return query.find()
   }
 )
-
-
 
 const posts = computed(() => {
   if (!data.value) {
     return []
   }
+
   const result = []
-  let lastYear = null;
+  let lastYear = null
+
   for (const post of data.value) {
     const year = new Date(post.publishedAt).getFullYear()
     const displayYear = year !== lastYear
+    post.displayYear = displayYear
     post.year = year
-    post.displayDate = displayYear
-    console.log(post.publishedAt, post.year)
-    result.push({
-      ...post
-    })
+    result.push(post)
     lastYear = year
   }
+
   return result
 })
 
-
+console.log(posts)
 </script>
 
-<style  scoped>
+<style scoped>
 .column {
-  @apply flex items-center space-x-8 py-2 border-b border-gray-200 dark:border-gray-700;
+  @apply flex items-center space-x-8 py-2 border-b border-gray-200 dark:border-gray-700
 }
 </style>
-```
