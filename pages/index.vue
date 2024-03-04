@@ -1,7 +1,7 @@
 <template>
-    <div>
-        Say Hello from index.vue
-    </div>
+    <article>
+        <ContentDoc />
+    </article>
 </template>
 
 <script setup>

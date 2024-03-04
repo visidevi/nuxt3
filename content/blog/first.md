@@ -1,4 +1,6 @@
 ---
+title: Vue Introduction
+publishedAt: 2023-04-12 17:15:00
 description: 'meta description of the page'
 head:
   meta:
@@ -12,6 +14,8 @@ head:
       content: '© 2022 NuxtLabs'
     - name: 'og:title'
       content: 'This is an OpenGraph title'
+toc: true
+
 ---
 # First post on our website
 

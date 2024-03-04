@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <p class="mb-10">Take a look at my Github projects!</p>
+  <div class="no-prose">
     <section class="" v-if="pending">{{ pending }}</section>
     <section class="" v-else-if="error">{{ error }}</section>
     <section class="" v-else>

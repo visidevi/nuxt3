@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     classSuffix: ''
   },
   app: {
+    pageTransition: {name: 'page', mode: 'out-in'},
     head: {
       title: "My Nuxt App",
       meta: [

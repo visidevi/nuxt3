@@ -1,5 +1,8 @@
 ---
+title: I'm Piotr, I'm a developer
+publishedAt: 2024-07-12 17:15:00
 description: 'meta description of the page'
+toc: true
 ---
 # Hello There, I'm Piotr
 

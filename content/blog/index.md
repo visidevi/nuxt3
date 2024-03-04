@@ -1,1 +1,1 @@
-::blog-post
+::blog-posts
