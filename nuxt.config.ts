@@ -1,7 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  nitro: {
+    prerender: {
+      routes: ['/sitemap.xml'],
+    }
+  },
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/color-mode", "@nuxt/content" ],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/color-mode", "@nuxt/content", ],
   colorMode: {
     classSuffix: ''
   },
